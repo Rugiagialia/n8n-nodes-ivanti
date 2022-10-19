@@ -6,8 +6,10 @@ import {
 } from 'n8n-workflow';
 
 export class IvantiApi implements ICredentialType {
+	// eslint-disable-next-line n8n-nodes-base/cred-class-field-name-uppercase-first-char
 	name = 'IvantiApi';
 	displayName = 'Ivanti API';
+	// eslint-disable-next-line n8n-nodes-base/cred-class-field-documentation-url-not-http-url
 	documentationUrl = 'ivantiApi';
 	properties: INodeProperties[] = [
 		{
