@@ -161,7 +161,6 @@ export class Ivanti implements INodeType {
 						"Source": source,
 					};
 					addAdditionalFields(data, additionalFields);
-					console.log(data);
 					const options: OptionsWithUri = {
 						headers: {
 							Accept: 'application/json',
