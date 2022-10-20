@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "description": "This is a learning project by building n8n community node to work with on-prem Ivanti installation.",
   "keywords": [
-    "n8n-community-node-package","ivanti"
+    "n8n-community-node-package",
+    "ivanti"
   ],
   "license": "MIT",
   "homepage": "",
