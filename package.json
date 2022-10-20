@@ -1,19 +1,19 @@
 {
   "name": "n8n-nodes-ivanti",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "This is a learning project by building n8n community node to work with on-prem Ivanti installation.",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package","ivanti"
   ],
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
+    "name": "Rugiagialia",
     "email": ""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/Rugiagialia/n8n-nodes-ivanti.git"
   },
   "main": "index.js",
   "scripts": {
