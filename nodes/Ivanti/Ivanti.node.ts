@@ -6,6 +6,34 @@ import { OptionsWithUri } from 'request';
 
 import { eventDescription } from './descriptions';
 
+/**
+ * Add the additional fields to the body
+ *
+ * @param {IDataObject} body The body object to add fields to
+ * @param {IDataObject} additionalFields The fields to add
+ */
+
+interface CustomProperty {
+	name: string;
+	value: string;
+}
+
+function addAdditionalFields(body: IDataObject, additionalFields: IDataObject) {
+	for (const key of Object.keys(additionalFields)) {
+		if (
+			key === 'customProperties' &&
+			(additionalFields.customProperties as IDataObject).property !== undefined
+		) {
+			for (const customProperty of (additionalFields.customProperties as IDataObject)!
+				.property! as CustomProperty[]) {
+				body[customProperty.name] = customProperty.value;
+			}
+		} else {
+			body[key] = additionalFields[key];
+		}
+	}
+}
+
 export class Ivanti implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Ivanti',
@@ -46,18 +74,18 @@ export class Ivanti implements INodeType {
 						name: 'Event',
 						value: 'event',
 					},
-					{
-						name: 'Incident',
-						value: 'incident',
-					},
-					{
-						name: 'Change',
-						value: 'change',
-					},
-					{
-						name: 'Employee',
-						value: 'employee',
-					},
+					// {
+					// 	name: 'Incident',
+					// 	value: 'incident',
+					// },
+					// {
+					// 	name: 'Change',
+					// 	value: 'change',
+					// },
+					// {
+					// 	name: 'Employee',
+					// 	value: 'employee',
+					// },
 				],
 				default: 'event',
 			},
@@ -81,13 +109,15 @@ export class Ivanti implements INodeType {
 			if (resource === 'event') {
 				if (operation === 'get') {
 					// Make HTTP request according to
-					const eventNumber = this.getNodeParameter('number', 0) as string;
+					const eventNumber = this.getNodeParameter('number', i) as string;
 					const options: OptionsWithUri = {
 						headers: {
 							Accept: 'application/json',
 						},
 						method: 'GET',
-						uri: `https://msp-stg.bluebridge.lt/HEAT/api/odata/businessobject/Frs_EVT_Events?$filter=EventNumber eq ` + eventNumber,
+						uri:
+							`https://msp-stg.bluebridge.lt/HEAT/api/odata/businessobject/Frs_EVT_Events?$filter=EventNumber eq ` +
+							eventNumber,
 						json: true,
 					};
 					responseData = await this.helpers.requestWithAuthentication.call(
@@ -96,15 +126,49 @@ export class Ivanti implements INodeType {
 						options,
 					);
 					returnData.push(responseData.value[0]);
-				}
-				else if (operation === 'getAll') {
+				} else if (operation === 'getAll') {
 					// Make HTTP request according to
+					const limit = this.getNodeParameter('limit', 0) as number;
+					const returnAll = false as boolean;
+					// const returnAll = this.getNodeParameter('returnAll', 0) as boolean;
+					if (!returnAll && limit < 100) {
+						const options: OptionsWithUri = {
+							headers: {
+								Accept: 'application/json',
+							},
+							method: 'GET',
+							uri:
+								`https://msp-stg.bluebridge.lt/HEAT/api/odata/businessobject/Frs_EVT_Events?$orderby=EventNumber desc&$top=` +
+								limit,
+							json: true,
+						};
+						responseData = await this.helpers.requestWithAuthentication.call(
+							this,
+							'IvantiApi',
+							options,
+						);
+						for (const item of responseData.value) returnData.push(item);
+					}
+				} else if (operation === 'create') {
+					// Make HTTP request according to
+					const Description = this.getNodeParameter('description', i) as string;
+					const Notes = this.getNodeParameter('notes', i) as string;
+					const Source = this.getNodeParameter('source', i) as string;
+					const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+					const data: IDataObject = {
+						Description,
+						Notes,
+						Source,
+					};
+					addAdditionalFields(data, additionalFields);
+					console.log(data);
 					const options: OptionsWithUri = {
 						headers: {
 							Accept: 'application/json',
 						},
-						method: 'GET',
-						uri: `https://msp-stg.bluebridge.lt/HEAT/api/odata/businessobject/Frs_EVT_Events?$top=10`,
+						method: 'POST',
+						uri: `https://msp-stg.bluebridge.lt/HEAT/api/odata/businessobject/Frs_EVT_Events`,
+						body: data,
 						json: true,
 					};
 					responseData = await this.helpers.requestWithAuthentication.call(
@@ -112,7 +176,7 @@ export class Ivanti implements INodeType {
 						'IvantiApi',
 						options,
 					);
-					for (const item of responseData.value) returnData.push(item);
+					returnData.push(responseData);
 				}
 			}
 		}

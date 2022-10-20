@@ -2,7 +2,9 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const eventDescription: INodeProperties[] = [
 	{
-		// Operations part
+		// ----------------------------------
+		//         event
+		// ----------------------------------
 
 		displayName: 'Operation',
 		name: 'operation',
@@ -18,7 +20,7 @@ export const eventDescription: INodeProperties[] = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create an event',
-				action: 'Create an eroup',
+				action: 'Create an event',
 			},
 			{
 				name: 'Get',
@@ -32,32 +34,39 @@ export const eventDescription: INodeProperties[] = [
 				description: 'Get many events',
 				action: 'Get many events',
 			},
-			{
-				name: 'Update',
-				value: 'update',
-				description: 'Update an event',
-				action: 'Update an event',
-			},
-			// {
-			// 	name: 'Get',
-			// 	value: 'get',
-			// 	action: 'Get the top event',
-			// 	description: 'Get the top event',
-			// 	routing: {
-			// 		request: {
-			// 			method: 'GET',
-			// 			url: '/HEAT/api/odata/businessobject/Frs_EVT_Events?$top=1',
-			// 		},
-			// 	},
-			// },
 		],
-		default: 'get',
+		default: 'getAll',
 	},
 
-	// Fields part
+	// ----------------------------------
+	//         event:getAll
+	// ----------------------------------
 
 	{
-		displayName: 'Event Number',
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		default: 50,
+		typeOptions: {
+			minValue: 1,
+			// eslint-disable-next-line n8n-nodes-base/node-param-type-options-max-value-present
+			maxValue: 100,
+		},
+		displayOptions: {
+			show: {
+				resource: ['event'],
+				operation: ['getAll'],
+				// returnAll: [false],
+			},
+		},
+		description: 'Max number of results to return',
+	},
+
+	// ----------------------------------
+	//         event:get
+	// ----------------------------------
+	{
+		displayName: 'Number',
 		name: 'number',
 		type: 'string',
 		default: '',
@@ -69,8 +78,13 @@ export const eventDescription: INodeProperties[] = [
 			},
 		},
 	},
+
+	// ----------------------------------
+	//         event:create
+	// ----------------------------------
+
 	{
-		displayName: 'Event Description',
+		displayName: 'Description',
 		name: 'description',
 		type: 'string',
 		default: '',
@@ -83,10 +97,40 @@ export const eventDescription: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Event Notes',
+		displayName: 'Notes',
 		name: 'notes',
 		type: 'string',
+		typeOptions: {
+			rows: 4,
+		},
 		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['create'],
+				resource: ['event'],
+			},
+		},
+	},
+	{
+		displayName: 'Source',
+		name: 'source',
+		type: 'options',
+		options: [
+			{
+				name: 'ImmyBot',
+				value: 'ImmyBot',
+			},
+			{
+				name: 'Mail',
+				value: 'Mail',
+			},
+			{
+				name: 'Zabbix',
+				value: 'Zabbix',
+			},
+		],
+		default: 'ImmyBot',
 		required: true,
 		displayOptions: {
 			show: {
@@ -109,8 +153,80 @@ export const eventDescription: INodeProperties[] = [
 		placeholder: 'Add Field',
 		options: [
 			{
+				displayName: 'Outage?',
+				name: 'IsOutage',
+				type: 'boolean',
+				default: false,
+			},
+			{
+				displayName: 'Unread?',
+				name: 'IsUnRead',
+				type: 'boolean',
+				default: true,
+			},
+			{
+				displayName: 'Employee ID',
+				name: 'CustomerLink_RecID',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Owner Team',
+				name: 'OwnerTeam',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Start Date Time',
+				name: 'EventStartDateTime',
+				type: 'dateTime',
+				default: '',
+			},
+			{
+				displayName: 'CI Name',
+				name: 'CIName',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Support Hours',
+				name: 'SupportHours',
+				type: 'options',
+				options: [
+					{
+						name: '9x5',
+						value: '9x5',
+					},
+					{
+						name: '24x7',
+						value: '24x7',
+					},
+				],
+				default: '9x5',
+			},
+			{
+				displayName: 'Severity',
+				name: 'Severity',
+				type: 'options',
+				options: [
+					{
+						name: 'Low',
+						value: 'Low',
+					},
+					{
+						name: 'Medium',
+						value: 'Medium',
+					},
+					{
+						name: 'High',
+						value: 'High',
+					},
+				],
+				default: 'Low',
+			},
+			{
 				displayName: 'Custom Fields',
-				name: 'customFieldsUi',
+				name: 'customProperties',
 				type: 'fixedCollection',
 				default: {},
 				placeholder: 'Add Custom Field',
@@ -119,7 +235,7 @@ export const eventDescription: INodeProperties[] = [
 				},
 				options: [
 					{
-						name: 'customFieldPairs',
+						name: 'property',
 						displayName: 'Custom Field',
 						values: [
 							{
