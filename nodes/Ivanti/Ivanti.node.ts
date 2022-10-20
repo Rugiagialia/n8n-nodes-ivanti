@@ -151,14 +151,14 @@ export class Ivanti implements INodeType {
 					}
 				} else if (operation === 'create') {
 					// Make HTTP request according to
-					const Description = this.getNodeParameter('description', i) as string;
-					const Notes = this.getNodeParameter('notes', i) as string;
-					const Source = this.getNodeParameter('source', i) as string;
+					const description = this.getNodeParameter('description', i) as string;
+					const notes = this.getNodeParameter('notes', i) as string;
+					const source = this.getNodeParameter('source', i) as string;
 					const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
 					const data: IDataObject = {
-						Description,
-						Notes,
-						Source,
+						"Description": description,
+						"Notes": notes,
+						"Source": source,
 					};
 					addAdditionalFields(data, additionalFields);
 					console.log(data);
