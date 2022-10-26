@@ -23,7 +23,6 @@ export class Ivanti implements INodeType {
 		],
 		requestDefaults: {
 			returnFullResponse: true,
-			// baseURL: 'https://httpbin.org',
 			baseURL:  '={{ $credentials.baseUrl.replace(new RegExp("/$"), "") }}/HEAT/api/odata/businessobject',
 			url: '',
 			headers: {
