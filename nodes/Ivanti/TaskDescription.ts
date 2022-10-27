@@ -1,6 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const eventOperations: INodeProperties[] = [
+export const taskOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,31 +8,36 @@ export const eventOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create an event',
-				action: 'Create an event',
+				description: 'Create a task',
+				action: 'Create a task',
 				routing: {
 					request: {
-						// baseURL: 'https://httpbin.org/anything',
+						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'POST',
-						url: '/Frs_EVT_Events',
+						url: '/Task__Assignments',
 					},
+					// send: {
+					// 	type: 'body',
+					// 	property: 'ParentLink',
+					// 	value: '={{null}}',
+					// },
 				},
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete an event',
-				action: 'Delete an event',
+				description: 'Delete a task',
+				action: 'Delete a task',
 				routing: {
 					request: {
-						// baseURL: 'https://httpbin.org/anything',
+						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'DELETE',
 					},
 				},
@@ -40,12 +45,12 @@ export const eventOperations: INodeProperties[] = [
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Retrieve an event',
-				action: 'Get an event',
+				description: 'Retrieve a task',
+				action: 'Get a task',
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/Frs_EVT_Events',
+						url: '/Task__Assignments',
 					},
 					output: {
 						postReceive: [
@@ -62,12 +67,12 @@ export const eventOperations: INodeProperties[] = [
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many events',
-				action: 'Get many events',
+				description: 'Get many tasks',
+				action: 'Get many tasks',
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/Frs_EVT_Events',
+						url: '/Task__Assignments',
 					},
 					output: {
 						postReceive: [
@@ -84,11 +89,11 @@ export const eventOperations: INodeProperties[] = [
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update an event',
-				action: 'Update an event',
+				description: 'Update a task',
+				action: 'Update a task',
 				routing: {
 					request: {
-						// baseURL: 'https://httpbin.org/anything',
+						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'PATCH',
 						},
 				},
@@ -100,7 +105,7 @@ export const eventOperations: INodeProperties[] = [
 
 const createOperation: INodeProperties[] = [
 	{
-		displayName: 'Description',
+		displayName: 'Subject',
 		name: 'title',
 		type: 'string',
 		default: '',
@@ -108,19 +113,19 @@ const createOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['create'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Description',
+				property: 'Subject',
 			},
 		},
-		description: 'Short title of the event',
+		description: 'Short title of the task',
 	},
 	{
-		displayName: 'Notes',
+		displayName: 'Details',
 		name: 'info',
 		type: 'string',
 		typeOptions: {
@@ -131,50 +136,93 @@ const createOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['create'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Notes',
+				property: 'Details',
 			},
 		},
-		description: 'More information about the event',
+		description: 'More information about the task',
 	},
 	{
-		displayName: 'Source',
-		name: 'source',
+		displayName: 'Parent Type',
+		name: 'parentCategory',
 		type: 'options',
 		options: [
 			{
-				name: 'ImmyBot',
-				value: 'ImmyBot',
+				name: 'Change',
+				value: 'Change',
 			},
 			{
-				name: 'Mail',
-				value: 'Mail',
+				name: 'Event',
+				value: 'Frs_EVT_Event',
 			},
 			{
-				name: 'Zabbix',
-				value: 'Zabbix',
+				name: 'Incident',
+				value: 'Incident',
+			},
+			{
+				name: 'Service Request',
+				value: 'ServiceReq',
 			},
 		],
-		default: 'ImmyBot',
+		default: 'Incident',
 		required: true,
 		displayOptions: {
 			show: {
 				operation: ['create'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Source',
+				property: 'ParentLink_Category',
 			},
 		},
-		description: 'In which source the event originated. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+	},
+	{
+		displayName: 'Parent Record ID',
+		name: 'parentId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['create'],
+				resource: ['task'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'ParentLink_RecID',
+			},
+		},
+		description: 'RecId value of the task in Ivanti',
+	},
+	{
+		displayName: 'Parent Link',
+		name: 'parentLink',
+		type: 'string',
+		default: '={{null}}',
+		displayOptions: {
+			show: {
+				operation: ['create'],
+				resource: ['task'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'ParentLink',
+			},
+		},
+		description: 'ParenLink value of the task in Ivanti',
 	},
 	{
 		displayName: 'Use Predefined Fields',
@@ -182,7 +230,7 @@ const createOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['create'],
 			},
 		},
@@ -195,7 +243,7 @@ const createOperation: INodeProperties[] = [
 		type: 'collection',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['create'],
 				predefined: [true],
 			},
@@ -203,34 +251,6 @@ const createOperation: INodeProperties[] = [
 		default: {},
 		placeholder: 'Add Predefined Field',
 		options: [
-			{
-				displayName: 'CI Name',
-				name: 'ciName',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CIName',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which CI is related to the event',
-			},
-			{
-				displayName: 'Outage',
-				name: 'isOutage',
-				type: 'boolean',
-				default: false,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether the event causes an outage',
-			},
 			{
 				displayName: 'Owner Team',
 				name: 'ownerTeam',
@@ -243,73 +263,7 @@ const createOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the event',
-			},
-			{
-				displayName: 'Severity',
-				name: 'severity',
-				type: 'options',
-				options: [
-					{
-						name: 'Low',
-						value: 'Low',
-					},
-					{
-						name: 'Medium',
-						value: 'Medium',
-					},
-					{
-						name: 'High',
-						value: 'High',
-					},
-				],
-				default: 'Low',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Severity',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'How severe is this event. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Start Date Time',
-				name: 'eventStartDateTime',
-				type: 'dateTime',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'EventStartDateTime',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Date and time when the event started',
-			},
-			{
-				displayName: 'Support Hours',
-				name: 'supportHours',
-				type: 'options',
-				options: [
-					{
-						name: '9x5',
-						value: '9x5',
-					},
-					{
-						name: '24x7',
-						value: '24x7',
-					},
-				],
-				default: '9x5',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'SupportHours',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+				description: 'Which team should investigate the task',
 			},
 			{
 				displayName: 'Unread',
@@ -323,22 +277,21 @@ const createOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Whether event was read',
+				description: 'Whether task was read',
 			},
 			{
-				displayName: 'User ID',
-				name: 'userId',
+				displayName: 'Service',
+				name: 'service',
 				type: 'string',
-				placeholder: '0014960452EE44259E8149C715B24DEF',
 				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'CustomerLink_RecID',
+						property: 'Service',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which user (employee) is related to event',
+				description: 'Which Service is related to task',
 			},
 		],
 	},
@@ -348,7 +301,7 @@ const createOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['create'],
 			},
 		},
@@ -361,7 +314,7 @@ const createOperation: INodeProperties[] = [
 		type: 'fixedCollection',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['create'],
 				custom: [true],
 			},
@@ -422,15 +375,15 @@ const deleteOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['delete'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		routing: {
 			request: {
-				url: "=/Frs_EVT_Events('{{ $value }}')",
+				url: "=/Task__Assignments('{{ $value }}')",
 			},
 		},
-		description: 'RecId value of the event in Ivanti',
+		description: 'RecId value of the task in Ivanti',
 	},
 ];
 
@@ -442,7 +395,7 @@ const getOperation: INodeProperties[] = [
 		options: [
 			{
 				name: 'Number',
-				value: 'eventNumber',
+				value: 'taskNumber',
 			},
 			{
 				name: 'Record ID',
@@ -454,7 +407,7 @@ const getOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['get'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
@@ -468,18 +421,18 @@ const getOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['get'],
-				resource: ['event'],
-				idType: ['eventNumber'],
+				resource: ['task'],
+				idType: ['taskNumber'],
 			},
 		},
 		routing: {
 			send: {
 				type: 'query',
 				property: '$filter',
-				value: '=EventNumber eq {{ $value }}',
+				value: '=AssignmentID eq {{ $value }}',
 			},
 		},
-		description: 'EventNumber value of the event in Ivanti',
+		description: 'AssignmentID value of the task in Ivanti',
 	},
 	{
 		displayName: 'Record ID',
@@ -490,7 +443,7 @@ const getOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['get'],
-				resource: ['event'],
+				resource: ['task'],
 				idType: ['recId'],
 			},
 		},
@@ -501,7 +454,7 @@ const getOperation: INodeProperties[] = [
 				value: "=RecId eq '{{ $value }}'",
 			},
 		},
-		description: 'RecId value of the event in Ivanti',
+		description: 'RecId value of the task in Ivanti',
 	},
 	{
 		displayName: 'Query Parameters',
@@ -511,7 +464,7 @@ const getOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['get'],
 			},
 		},
@@ -529,7 +482,7 @@ const getOperation: INodeProperties[] = [
 					},
 				},
 				description: 'Include only these fields',
-				placeholder: 'EventNumber, RecId, Status, Owner',
+				placeholder: 'AssignmentID, RecId, Status, Owner',
 			},
 		],
 		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
@@ -549,7 +502,7 @@ const getAllOperation: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['getAll'],
 			},
 		},
@@ -568,7 +521,7 @@ const getAllOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['getAll'],
 			},
 		},
@@ -582,7 +535,7 @@ const getAllOperation: INodeProperties[] = [
 		placeholder: 'Add Sort Options',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['getAll'],
 				sortOptions: [true],
 			},
@@ -659,7 +612,7 @@ const getAllOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['getAll'],
 			},
 		},
@@ -692,7 +645,7 @@ const getAllOperation: INodeProperties[] = [
 					},
 				},
 				description: 'Include only these fields',
-				placeholder: 'EventNumber, RecId, Status, Owner',
+				placeholder: 'AssignmentID, RecId, Status, Owner',
 			},
 			{
 				displayName: 'Skip Records',
@@ -728,15 +681,15 @@ const updateOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['update'],
-				resource: ['event'],
+				resource: ['task'],
 			},
 		},
 		routing: {
 			request: {
-				url: "=/Frs_EVT_Events('{{ $value }}')",
+				url: "=/Task__Assignments('{{ $value }}')",
 			},
 		},
-		description: 'RecId value of the event in Ivanti',
+		description: 'RecId value of the task in Ivanti',
 	},
 	{
 		displayName: 'Use Predefined Fields',
@@ -744,7 +697,7 @@ const updateOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['update'],
 			},
 		},
@@ -757,7 +710,7 @@ const updateOperation: INodeProperties[] = [
 		type: 'collection',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['update'],
 				predefined: [true],
 			},
@@ -766,35 +719,7 @@ const updateOperation: INodeProperties[] = [
 		placeholder: 'Add Predefined Field',
 		options: [
 			{
-				displayName: 'CI Name',
-				name: 'ciName',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CIName',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which CI is related to the event',
-			},
-			{
-				displayName: 'Description',
-				name: 'title',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Description',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Short title of the event',
-			},
-			{
-				displayName: 'Notes',
+				displayName: 'Details',
 				name: 'info',
 				type: 'string',
 				typeOptions: {
@@ -804,25 +729,11 @@ const updateOperation: INodeProperties[] = [
 				routing: {
 					send: {
 						type: 'body',
-						property: 'Notes',
+						property: 'Details',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'More information about the event',
-			},
-			{
-				displayName: 'Outage',
-				name: 'isOutage',
-				type: 'boolean',
-				default: false,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether the event causes an outage',
+				description: 'More information about the task',
 			},
 			{
 				displayName: 'Owner Team',
@@ -836,7 +747,66 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the event',
+				description: 'Which team should investigate the task',
+			},
+			{
+				displayName: 'Parent Link',
+				name: 'parentLink',
+				type: 'string',
+				default: '={{null}}',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'ParentLink',
+					},
+				},
+				description: 'ParenLink value of the task in Ivanti',
+			},
+			{
+				displayName: 'Parent Record ID',
+				name: 'parentId',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'ParentLink_RecID',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'RecId value of the task in Ivanti',
+			},
+			{
+				displayName: 'Parent Type',
+				name: 'parentCategory',
+				type: 'options',
+				options: [
+					{
+						name: 'Change',
+						value: 'Change',
+					},
+					{
+						name: 'Event',
+						value: 'Frs_EVT_Event',
+					},
+					{
+						name: 'Incident',
+						value: 'Incident',
+					},
+					{
+						name: 'Service Request',
+						value: 'ServiceReq',
+					},
+				],
+				default: 'Incident',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'ParentLink_Category',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Resolution',
@@ -853,77 +823,21 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Resolution details of the event',
+				description: 'Resolution details of the task',
 			},
 			{
-				displayName: 'Severity',
-				name: 'severity',
-				type: 'options',
-				options: [
-					{
-						name: 'Low',
-						value: 'Low',
-					},
-					{
-						name: 'Medium',
-						value: 'Medium',
-					},
-					{
-						name: 'High',
-						value: 'High',
-					},
-				],
-				default: 'Low',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Severity',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'How severe is this event. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Source',
-				name: 'source',
-				type: 'options',
-				options: [
-					{
-						name: 'ImmyBot',
-						value: 'ImmyBot',
-					},
-					{
-						name: 'Mail',
-						value: 'Mail',
-					},
-					{
-						name: 'Zabbix',
-						value: 'Zabbix',
-					},
-				],
-				default: 'ImmyBot',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Source',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'In which source the event originated. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Start Date Time',
-				name: 'eventStartDateTime',
-				type: 'dateTime',
+				displayName: 'Service',
+				name: 'service',
+				type: 'string',
 				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'EventStartDateTime',
+						property: 'Service',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Date and time when the event started',
+				description: 'Which Service is related to task',
 			},
 			{
 				displayName: 'Status',
@@ -940,28 +854,18 @@ const updateOperation: INodeProperties[] = [
 				description: 'Status of the task',
 			},
 			{
-				displayName: 'Support Hours',
-				name: 'supportHours',
-				type: 'options',
-				options: [
-					{
-						name: '9x5',
-						value: '9x5',
-					},
-					{
-						name: '24x7',
-						value: '24x7',
-					},
-				],
-				default: '9x5',
+				displayName: 'Subject',
+				name: 'title',
+				type: 'string',
+				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'SupportHours',
+						property: 'Subject',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+				description: 'Short title of the task',
 			},
 			{
 				displayName: 'Unread',
@@ -975,22 +879,7 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Whether event was read',
-			},
-			{
-				displayName: 'User ID',
-				name: 'userId',
-				type: 'string',
-				placeholder: '0014960452EE44259E8149C715B24DEF',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CustomerLink_RecID',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which user (employee) is related to event',
+				description: 'Whether task was read',
 			},
 		],
 	},
@@ -1000,7 +889,7 @@ const updateOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['update'],
 			},
 		},
@@ -1013,7 +902,7 @@ const updateOperation: INodeProperties[] = [
 		type: 'fixedCollection',
 		displayOptions: {
 			show: {
-				resource: ['event'],
+				resource: ['task'],
 				operation: ['update'],
 				custom: [true],
 			},
@@ -1062,7 +951,7 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
-export const eventFields: INodeProperties[] = [
+export const taskFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
 	...getAllOperation,

@@ -1,5 +1,6 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { eventFields, eventOperations } from './EventDescription';
+import { taskFields, taskOperations } from './TaskDescription';
 
 export class Ivanti implements INodeType {
 	description: INodeTypeDescription = {
@@ -42,6 +43,10 @@ export class Ivanti implements INodeType {
 						name: 'Event',
 						value: 'event',
 					},
+					{
+						name: 'Task',
+						value: 'task',
+					},
 					// {
 					// 	name: 'Incident',
 					// 	value: 'incident',
@@ -60,6 +65,8 @@ export class Ivanti implements INodeType {
 
 			...eventOperations,
 			...eventFields,
+			...taskOperations,
+			...taskFields,
 		],
 	};
 }
