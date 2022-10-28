@@ -1,6 +1,19 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const taskOperations: INodeProperties[] = [
+export const customOperations: INodeProperties[] = [
+	{
+		displayName: 'Business Object ID',
+		name: 'busenessObjectId',
+		required: true,
+		noDataExpression: true,
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['custom'],
+			},
+		},
+	},
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,28 +21,28 @@ export const taskOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 			},
 		},
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a task',
-				action: 'Create a task',
+				description: 'Create a custom object',
+				action: 'Create a custom object',
 				routing: {
 					request: {
 						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'POST',
-						url: '/Task__Assignments',
+						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
 				},
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a task',
-				action: 'Delete a task',
+				description: 'Delete a custom object',
+				action: 'Delete a custom object',
 				routing: {
 					request: {
 						baseURL: 'https://test.automaton.ninja/anything',
@@ -40,12 +53,13 @@ export const taskOperations: INodeProperties[] = [
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Retrieve a task',
-				action: 'Get a task',
+				description: 'Retrieve a custom object',
+				action: 'Get a custom object',
 				routing: {
 					request: {
+						//baseURL: 'https://test.automaton.ninja/anything',
 						method: 'GET',
-						url: '/Task__Assignments',
+						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
 					output: {
 						postReceive: [
@@ -62,12 +76,13 @@ export const taskOperations: INodeProperties[] = [
 			{
 				name: 'Get Count',
 				value: 'getCount',
-				description: 'Retrieve a count of tasks',
-				action: 'Retrieve a count of tasks',
+				description: 'Retrieve a count of custom objects',
+				action: 'Retrieve a count of custom objects',
 				routing: {
 					request: {
+						//baseURL: 'https://test.automaton.ninja/anything',
 						method: 'GET',
-						url: '/Task__Assignments',
+						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
 					send: {
 						type: 'query',
@@ -89,12 +104,13 @@ export const taskOperations: INodeProperties[] = [
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many tasks',
-				action: 'Get many tasks',
+				description: 'Get many objects',
+				action: 'Get many objects',
 				routing: {
 					request: {
+						//baseURL: 'https://test.automaton.ninja/anything',
 						method: 'GET',
-						url: '/Task__Assignments',
+						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
 					output: {
 						postReceive: [
@@ -111,8 +127,8 @@ export const taskOperations: INodeProperties[] = [
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a task',
-				action: 'Update a task',
+				description: 'Update a custom object',
+				action: 'Update a custom object',
 				routing: {
 					request: {
 						baseURL: 'https://test.automaton.ninja/anything',
@@ -127,207 +143,16 @@ export const taskOperations: INodeProperties[] = [
 
 const createOperation: INodeProperties[] = [
 	{
-		displayName: 'Subject',
-		name: 'title',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['create'],
-				resource: ['task'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'Subject',
-			},
-		},
-		description: 'Short title of the task',
-	},
-	{
-		displayName: 'Details',
-		name: 'info',
-		type: 'string',
-		typeOptions: {
-			rows: 4,
-		},
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['create'],
-				resource: ['task'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'Details',
-			},
-		},
-		description: 'More information about the task',
-	},
-	{
-		displayName: 'Parent Type',
-		name: 'parentCategory',
-		type: 'options',
-		options: [
-			{
-				name: 'Change',
-				value: 'Change',
-			},
-			{
-				name: 'Event',
-				value: 'Frs_EVT_Event',
-			},
-			{
-				name: 'Incident',
-				value: 'Incident',
-			},
-			{
-				name: 'Service Request',
-				value: 'ServiceReq',
-			},
-		],
-		default: 'Incident',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['create'],
-				resource: ['task'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'ParentLink_Category',
-			},
-		},
-		description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-	},
-	{
-		displayName: 'Parent Record ID',
-		name: 'parentId',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['create'],
-				resource: ['task'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'ParentLink_RecID',
-			},
-		},
-		description: 'RecId value of the task in Ivanti',
-	},
-	{
-		displayName: 'Parent Link',
-		name: 'parentLink',
-		type: 'string',
-		default: '={{null}}',
-		displayOptions: {
-			show: {
-				operation: ['create'],
-				resource: ['task'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'ParentLink',
-			},
-		},
-		description: 'ParenLink value of the task in Ivanti',
-	},
-	{
-		displayName: 'Use Predefined Fields',
-		name: 'predefined',
-		type: 'boolean',
-		displayOptions: {
-			show: {
-				resource: ['task'],
-				operation: ['create'],
-			},
-		},
-		default: false,
-		description: 'Whether object creation requires more predefined prameters',
-	},
-	{
-		displayName: 'Predefined Fields',
-		name: 'predefinedFields',
-		type: 'collection',
-		displayOptions: {
-			show: {
-				resource: ['task'],
-				operation: ['create'],
-				predefined: [true],
-			},
-		},
-		default: {},
-		placeholder: 'Add Predefined Field',
-		options: [
-			{
-				displayName: 'Owner Team',
-				name: 'ownerTeam',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'OwnerTeam',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which team should investigate the task',
-			},
-			{
-				displayName: 'Unread',
-				name: 'isUnRead',
-				type: 'boolean',
-				default: true,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsUnread',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether task was read',
-			},
-			{
-				displayName: 'Service',
-				name: 'service',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Service',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which Service is related to task',
-			},
-		],
-	},
-	{
 		displayName: 'Send Custom Fields',
 		name: 'customFields',
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['create'],
 			},
 		},
-		default: false,
+		default: true,
 		description: 'Whether creating object requires more custom prameters',
 	},
 	{
@@ -336,7 +161,7 @@ const createOperation: INodeProperties[] = [
 		type: 'fixedCollection',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['create'],
 				customFields: [true],
 			},
@@ -397,65 +222,19 @@ const deleteOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['delete'],
-				resource: ['task'],
+				resource: ['custom'],
 			},
 		},
 		routing: {
 			request: {
-				url: "=/Task__Assignments('{{ $value }}')",
+				url: "=/{{$parameter['busenessObjectId']}}s('{{ $value }}')",
 			},
 		},
-		description: 'RecId value of the task in Ivanti',
+		description: 'RecId value of the custom object in Ivanti',
 	},
 ];
 
 const getOperation: INodeProperties[] = [
-	{
-		displayName: 'ID Type',
-		name: 'idType',
-		type: 'options',
-		options: [
-			{
-				name: 'Number',
-				value: 'taskNumber',
-			},
-			{
-				name: 'Record ID',
-				value: 'recId',
-			},
-		],
-		default: 'recId',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['get'],
-				resource: ['task'],
-			},
-		},
-		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
-	},
-	{
-		displayName: 'Number',
-		name: 'id',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				operation: ['get'],
-				resource: ['task'],
-				idType: ['taskNumber'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'query',
-				property: '$filter',
-				value: '=AssignmentID eq {{ $value }}',
-			},
-		},
-		description: 'AssignmentID value of the task in Ivanti',
-	},
 	{
 		displayName: 'Record ID',
 		name: 'id',
@@ -465,8 +244,8 @@ const getOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['get'],
-				resource: ['task'],
-				idType: ['recId'],
+				resource: ['custom'],
+				//idType: ['recId'],
 			},
 		},
 		routing: {
@@ -476,7 +255,7 @@ const getOperation: INodeProperties[] = [
 				value: "=RecId eq '{{ $value }}'",
 			},
 		},
-		description: 'RecId value of the task in Ivanti',
+		description: 'RecId value of the custom object in Ivanti',
 	},
 	{
 		displayName: 'Query Parameters',
@@ -486,7 +265,7 @@ const getOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['get'],
 			},
 		},
@@ -504,7 +283,7 @@ const getOperation: INodeProperties[] = [
 					},
 				},
 				description: 'Include only these fields',
-				placeholder: 'AssignmentID, RecId, Status, Owner',
+				placeholder: 'RecId, CreatedDateTime, LastModDateTime',
 			},
 		],
 		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
@@ -524,7 +303,7 @@ const getAllOperation: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['getAll'],
 			},
 		},
@@ -543,7 +322,7 @@ const getAllOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['getAll'],
 			},
 		},
@@ -557,7 +336,7 @@ const getAllOperation: INodeProperties[] = [
 		placeholder: 'Add Sort Options',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['getAll'],
 				sortOptions: [true],
 			},
@@ -634,7 +413,7 @@ const getAllOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['getAll'],
 			},
 		},
@@ -667,7 +446,7 @@ const getAllOperation: INodeProperties[] = [
 					},
 				},
 				description: 'Include only these fields',
-				placeholder: 'AssignmentID, RecId, Status, Owner',
+				placeholder: 'RecId, CreatedDateTime, LastModDateTime',
 			},
 			{
 				displayName: 'Skip Records',
@@ -702,7 +481,7 @@ const getCountOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['getCount'],
 			},
 		},
@@ -737,207 +516,15 @@ const updateOperation: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['update'],
-				resource: ['task'],
+				resource: ['custom'],
 			},
 		},
 		routing: {
 			request: {
-				url: "=/Task__Assignments('{{ $value }}')",
+				url: "=/{{$parameter['busenessObjectId']}}s('{{ $value }}')",
 			},
 		},
-		description: 'RecId value of the task in Ivanti',
-	},
-	{
-		displayName: 'Use Predefined Fields',
-		name: 'predefined',
-		type: 'boolean',
-		displayOptions: {
-			show: {
-				resource: ['task'],
-				operation: ['update'],
-			},
-		},
-		default: false,
-		description: 'Whether object creation requires more predefined prameters',
-	},
-	{
-		displayName: 'Predefined Fields',
-		name: 'predefinedFields',
-		type: 'collection',
-		displayOptions: {
-			show: {
-				resource: ['task'],
-				operation: ['update'],
-				predefined: [true],
-			},
-		},
-		default: {},
-		placeholder: 'Add Predefined Field',
-		options: [
-			{
-				displayName: 'Details',
-				name: 'info',
-				type: 'string',
-				typeOptions: {
-					rows: 4,
-				},
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Details',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'More information about the task',
-			},
-			{
-				displayName: 'Owner Team',
-				name: 'ownerTeam',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'OwnerTeam',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which team should investigate the task',
-			},
-			{
-				displayName: 'Parent Link',
-				name: 'parentLink',
-				type: 'string',
-				default: '={{null}}',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'ParentLink',
-					},
-				},
-				description: 'ParenLink value of the task in Ivanti',
-			},
-			{
-				displayName: 'Parent Record ID',
-				name: 'parentId',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'ParentLink_RecID',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'RecId value of the task in Ivanti',
-			},
-			{
-				displayName: 'Parent Type',
-				name: 'parentCategory',
-				type: 'options',
-				options: [
-					{
-						name: 'Change',
-						value: 'Change',
-					},
-					{
-						name: 'Event',
-						value: 'Frs_EVT_Event',
-					},
-					{
-						name: 'Incident',
-						value: 'Incident',
-					},
-					{
-						name: 'Service Request',
-						value: 'ServiceReq',
-					},
-				],
-				default: 'Incident',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'ParentLink_Category',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Resolution',
-				name: 'resolution',
-				type: 'string',
-				typeOptions: {
-					rows: 4,
-				},
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Resolution',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Resolution details of the task',
-			},
-			{
-				displayName: 'Service',
-				name: 'service',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Service',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which Service is related to task',
-			},
-			{
-				displayName: 'Status',
-				name: 'status',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Status',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Status of the task',
-			},
-			{
-				displayName: 'Subject',
-				name: 'title',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Subject',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Short title of the task',
-			},
-			{
-				displayName: 'Unread',
-				name: 'isUnRead',
-				type: 'boolean',
-				default: true,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsUnread',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether task was read',
-			},
-		],
+		description: 'RecId value of the custom object in Ivanti',
 	},
 	{
 		displayName: 'Send Custom Fields',
@@ -945,11 +532,11 @@ const updateOperation: INodeProperties[] = [
 		type: 'boolean',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['update'],
 			},
 		},
-		default: false,
+		default: true,
 		description: 'Whether creating object requires more custom prameters',
 	},
 	{
@@ -958,7 +545,7 @@ const updateOperation: INodeProperties[] = [
 		type: 'fixedCollection',
 		displayOptions: {
 			show: {
-				resource: ['task'],
+				resource: ['custom'],
 				operation: ['update'],
 				customFields: [true],
 			},
@@ -984,6 +571,7 @@ const updateOperation: INodeProperties[] = [
 						displayName: 'Field Name or ID',
 						name: 'name',
 						type: 'string',
+						required: true,
 						default: '',
 						description: 'Name of the custom field to set',
 					},
@@ -991,6 +579,7 @@ const updateOperation: INodeProperties[] = [
 						displayName: 'Field Value',
 						name: 'value',
 						type: 'string',
+						required: true,
 						default: '',
 						routing: {
 							send: {
@@ -1007,11 +596,11 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
-export const taskFields: INodeProperties[] = [
+export const customFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
 	...getAllOperation,
-	...getOperation,
 	...getCountOperation,
+	...getOperation,
 	...updateOperation,
 ];

@@ -60,6 +60,33 @@ export const eventOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Get Count',
+				value: 'getCount',
+				description: 'Retrieve a count of events',
+				action: 'Retrieve a count of events',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/Frs_EVT_Events',
+					},
+					send: {
+						type: 'query',
+						property: '$top',
+						value: '1',
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+										count: '={{$responseItem["@odata.count"] == 0 ? 1 : $responseItem["@odata.count"] }}',
+								},
+							},
+						],
+					},
+				},
+			},
+			{
 				name: 'Get Many',
 				value: 'getAll',
 				description: 'Get many events',
@@ -344,7 +371,7 @@ const createOperation: INodeProperties[] = [
 	},
 	{
 		displayName: 'Send Custom Fields',
-		name: 'custom',
+		name: 'customFields',
 		type: 'boolean',
 		displayOptions: {
 			show: {
@@ -363,7 +390,7 @@ const createOperation: INodeProperties[] = [
 			show: {
 				resource: ['event'],
 				operation: ['create'],
-				custom: [true],
+				customFields: [true],
 			},
 		},
 		default: {
@@ -718,6 +745,40 @@ const getAllOperation: INodeProperties[] = [
 	},
 ];
 
+const getCountOperation: INodeProperties[] = [
+	{
+		displayName: 'Query Parameters',
+		name: 'queryParameters',
+		type: 'collection',
+		placeholder: 'Extend Query',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['event'],
+				operation: ['getCount'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Result Filter',
+				name: 'filter',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: '$filter',
+						value: '={{ $value !== "" ? $value : undefined }}',
+					},
+				},
+				description: 'An expression which will filter the results',
+				placeholder: "Status eq 'Open'",
+			}
+		],
+		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+	},
+];
+
 const updateOperation: INodeProperties[] = [
 	{
 		displayName: 'Record ID',
@@ -996,7 +1057,7 @@ const updateOperation: INodeProperties[] = [
 	},
 	{
 		displayName: 'Send Custom Fields',
-		name: 'custom',
+		name: 'customFields',
 		type: 'boolean',
 		displayOptions: {
 			show: {
@@ -1015,7 +1076,7 @@ const updateOperation: INodeProperties[] = [
 			show: {
 				resource: ['event'],
 				operation: ['update'],
-				custom: [true],
+				customFields: [true],
 			},
 		},
 		default: {
@@ -1067,5 +1128,6 @@ export const eventFields: INodeProperties[] = [
 	...deleteOperation,
 	...getAllOperation,
 	...getOperation,
+	...getCountOperation,
 	...updateOperation,
 ];

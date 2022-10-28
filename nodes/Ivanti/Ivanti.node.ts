@@ -1,6 +1,7 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { eventFields, eventOperations } from './EventDescription';
 import { taskFields, taskOperations } from './TaskDescription';
+import { customFields, customOperations } from './CustomDescription';
 
 export class Ivanti implements INodeType {
 	description: INodeTypeDescription = {
@@ -40,6 +41,10 @@ export class Ivanti implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Custom Business Object',
+						value: 'custom',
+					},
+					{
 						name: 'Event',
 						value: 'event',
 					},
@@ -67,6 +72,8 @@ export class Ivanti implements INodeType {
 			...eventFields,
 			...taskOperations,
 			...taskFields,
+			...customOperations,
+			...customFields,
 		],
 	};
 }
