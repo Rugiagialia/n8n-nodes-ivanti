@@ -19,7 +19,7 @@ export const taskOperations: INodeProperties[] = [
 				action: 'Create a task',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'POST',
 						url: '/Task__Assignments',
 					},
@@ -32,7 +32,7 @@ export const taskOperations: INodeProperties[] = [
 				action: 'Delete a task',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'DELETE',
 					},
 				},
@@ -79,7 +79,8 @@ export const taskOperations: INodeProperties[] = [
 							{
 								type: 'setKeyValue',
 								properties: {
-										count: '={{$responseItem["@odata.count"] == 0 ? 1 : $responseItem["@odata.count"] }}',
+									count:
+										'={{$responseItem["@odata.count"] == 0 ? 1 : $responseItem["@odata.count"] }}',
 								},
 							},
 						],
@@ -115,9 +116,9 @@ export const taskOperations: INodeProperties[] = [
 				action: 'Update a task',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'PATCH',
-						},
+					},
 				},
 			},
 		],
@@ -205,7 +206,8 @@ const createOperation: INodeProperties[] = [
 				property: 'ParentLink_Category',
 			},
 		},
-		description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description:
+			'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Parent Record ID',
@@ -432,7 +434,8 @@ const getOperation: INodeProperties[] = [
 				resource: ['task'],
 			},
 		},
-		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 	},
 	{
 		displayName: 'Number',
@@ -507,7 +510,8 @@ const getOperation: INodeProperties[] = [
 				placeholder: 'AssignmentID, RecId, Status, Owner',
 			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
@@ -689,7 +693,8 @@ const getAllOperation: INodeProperties[] = [
 				description: 'Use this property when looping trough more than 100 results',
 			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
@@ -721,9 +726,10 @@ const getCountOperation: INodeProperties[] = [
 				},
 				description: 'An expression which will filter the results',
 				placeholder: "Status eq 'Open'",
-			}
+			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
@@ -862,7 +868,8 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description:
+					'Which type of business object should be the task related to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Resolution',

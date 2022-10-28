@@ -32,7 +32,7 @@ export const customOperations: INodeProperties[] = [
 				action: 'Create a custom object',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'POST',
 						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
@@ -45,7 +45,7 @@ export const customOperations: INodeProperties[] = [
 				action: 'Delete a custom object',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'DELETE',
 					},
 				},
@@ -57,7 +57,7 @@ export const customOperations: INodeProperties[] = [
 				action: 'Get a custom object',
 				routing: {
 					request: {
-						//baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'GET',
 						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
@@ -80,7 +80,7 @@ export const customOperations: INodeProperties[] = [
 				action: 'Retrieve a count of custom objects',
 				routing: {
 					request: {
-						//baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'GET',
 						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
@@ -94,7 +94,8 @@ export const customOperations: INodeProperties[] = [
 							{
 								type: 'setKeyValue',
 								properties: {
-										count: '={{$responseItem["@odata.count"] == 0 ? 1 : $responseItem["@odata.count"] }}',
+									count:
+										'={{$responseItem["@odata.count"] == 0 ? 1 : $responseItem["@odata.count"] }}',
 								},
 							},
 						],
@@ -108,7 +109,7 @@ export const customOperations: INodeProperties[] = [
 				action: 'Get many objects',
 				routing: {
 					request: {
-						//baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'GET',
 						url: '=/{{$parameter["busenessObjectId"]}}s',
 					},
@@ -131,9 +132,9 @@ export const customOperations: INodeProperties[] = [
 				action: 'Update a custom object',
 				routing: {
 					request: {
-						baseURL: 'https://test.automaton.ninja/anything',
+						// baseURL: 'https://httpbin.org/anything',
 						method: 'PATCH',
-						},
+					},
 				},
 			},
 		],
@@ -286,7 +287,8 @@ const getOperation: INodeProperties[] = [
 				placeholder: 'RecId, CreatedDateTime, LastModDateTime',
 			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
@@ -468,7 +470,8 @@ const getAllOperation: INodeProperties[] = [
 				description: 'Use this property when looping trough more than 100 results',
 			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
@@ -500,9 +503,10 @@ const getCountOperation: INodeProperties[] = [
 				},
 				description: 'An expression which will filter the results',
 				placeholder: "Status eq 'Open'",
-			}
+			},
 		],
-		description: 'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
+		description:
+			'Send additional query parameters. More <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">information</a>.',
 	},
 ];
 
