@@ -246,7 +246,6 @@ const getOperation: INodeProperties[] = [
 			show: {
 				operation: ['get'],
 				resource: ['custom'],
-				//idType: ['recId'],
 			},
 		},
 		routing: {
