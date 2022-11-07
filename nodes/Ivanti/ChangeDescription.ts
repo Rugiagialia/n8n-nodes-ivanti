@@ -131,7 +131,7 @@ export const changeOperations: INodeProperties[] = [
 
 const createOperation: INodeProperties[] = [
 	{
-		displayName: 'Description',
+		displayName: 'Subject',
 		name: 'title',
 		type: 'string',
 		default: '',
@@ -145,13 +145,13 @@ const createOperation: INodeProperties[] = [
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Description',
+				property: 'Subject',
 			},
 		},
 		description: 'Short title of the change',
 	},
 	{
-		displayName: 'Notes',
+		displayName: 'Description',
 		name: 'info',
 		type: 'string',
 		typeOptions: {
@@ -168,30 +168,51 @@ const createOperation: INodeProperties[] = [
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Notes',
+				property: 'Description',
 			},
 		},
 		description: 'More information about the change',
 	},
 	{
-		displayName: 'Source',
-		name: 'source',
+		displayName: 'Type Of Change',
+		name: 'changeType',
 		type: 'options',
 		options: [
 			{
-				name: 'ImmyBot',
-				value: 'ImmyBot',
+				name: 'Normal',
+				value: 'Normal',
 			},
 			{
-				name: 'Mail',
-				value: 'Mail',
+				name: 'Operational',
+				value: 'Operational',
 			},
 			{
-				name: 'Zabbix',
-				value: 'Zabbix',
+				name: 'Standard',
+				value: 'Standard',
 			},
 		],
-		default: 'ImmyBot',
+		default: 'Normal',
+		displayOptions: {
+			show: {
+				operation: ['create'],
+				resource: ['change'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'TypeOfChange',
+			},
+		},
+		description:
+			'Type of the change. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+	},
+	{
+		displayName: 'User ID',
+		name: 'userId',
+		type: 'string',
+		placeholder: '0014960452EE44259E8149C715B24DEF',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -202,11 +223,11 @@ const createOperation: INodeProperties[] = [
 		routing: {
 			send: {
 				type: 'body',
-				property: 'Source',
+				property: 'RequestorLink_RecID',
+				value: '={{ $value || undefined }}',
 			},
 		},
-		description:
-			'In which source the change originated. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description: 'Which user (employee) is related to change',
 	},
 	{
 		displayName: 'Use Predefined Fields',
@@ -236,34 +257,6 @@ const createOperation: INodeProperties[] = [
 		placeholder: 'Add Predefined Field',
 		options: [
 			{
-				displayName: 'CI Name',
-				name: 'ciName',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CIName',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which CI is related to the change',
-			},
-			{
-				displayName: 'Outage',
-				name: 'isOutage',
-				type: 'boolean',
-				default: false,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether the change causes an outage',
-			},
-			{
 				displayName: 'Owner Team',
 				name: 'ownerTeam',
 				type: 'string',
@@ -275,75 +268,79 @@ const createOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the change',
+				description: 'Which team should implement the change',
 			},
 			{
-				displayName: 'Severity',
-				name: 'severity',
-				type: 'options',
-				options: [
-					{
-						name: 'Low',
-						value: 'Low',
-					},
-					{
-						name: 'Medium',
-						value: 'Medium',
-					},
-					{
-						name: 'High',
-						value: 'High',
-					},
-				],
-				default: 'Low',
+				displayName: 'Private',
+				name: 'private',
+				type: 'boolean',
+				default: false,
 				routing: {
 					send: {
 						type: 'body',
-						property: 'Severity',
+						property: 'Private',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description:
-					'How severe is this change. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Whether change is private',
 			},
 			{
-				displayName: 'Start Date Time',
-				name: 'changeStartDateTime',
-				type: 'dateTime',
+				displayName: 'Service (ID)',
+				name: 'serviceId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
 				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'EventStartDateTime',
+						property: 'Service_Valid',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Date and time when the change started',
+				description: 'Which Service is related to the change',
 			},
 			{
-				displayName: 'Support Hours',
-				name: 'supportHours',
-				type: 'options',
-				options: [
-					{
-						name: '9x5',
-						value: '9x5',
-					},
-					{
-						name: '24x7',
-						value: '24x7',
-					},
-				],
-				default: '9x5',
+				displayName: 'Service (Name)',
+				name: 'service',
+				type: 'string',
+				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'SupportHours',
+						property: 'Service',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description:
-					'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+				description: 'Which Service is related to the change',
+			},
+			{
+				displayName: 'Service Level Agreement (ID)',
+				name: 'slaId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'XSC_ServiceLevelAgreement_Valid',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service Level Agreement is related to the change',
+			},
+			{
+				displayName: 'Service Level Agreement (Name)',
+				name: 'sla',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'XSC_ServiceLevelAgreement',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service Level Agreement is related to the change',
 			},
 			{
 				displayName: 'Unread',
@@ -358,21 +355,6 @@ const createOperation: INodeProperties[] = [
 					},
 				},
 				description: 'Whether change was read',
-			},
-			{
-				displayName: 'User ID',
-				name: 'userId',
-				type: 'string',
-				placeholder: '0014960452EE44259E8149C715B24DEF',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CustomerLink_RecID',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which user (employee) is related to change',
 			},
 		],
 	},
@@ -461,7 +443,7 @@ const deleteOperation: INodeProperties[] = [
 		},
 		routing: {
 			request: {
-				url: "=/Frs_EVT_Events('{{ $value }}')",
+				url: "=/changes('{{ $value }}')",
 			},
 		},
 		description: 'RecId value of the change in Ivanti',
@@ -492,8 +474,7 @@ const getOperation: INodeProperties[] = [
 				resource: ['change'],
 			},
 		},
-		description:
-			'Choose ID type from the list',
+		description: 'Choose ID type from the list',
 	},
 	{
 		displayName: 'Number',
@@ -806,7 +787,7 @@ const updateOperation: INodeProperties[] = [
 		},
 		routing: {
 			request: {
-				url: "=/Frs_EVT_Events('{{ $value }}')",
+				url: "=/changes('{{ $value }}')",
 			},
 		},
 		description: 'RecId value of the change in Ivanti',
@@ -839,35 +820,7 @@ const updateOperation: INodeProperties[] = [
 		placeholder: 'Add Predefined Field',
 		options: [
 			{
-				displayName: 'CI Name',
-				name: 'ciName',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'CIName',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Which CI is related to the change',
-			},
-			{
 				displayName: 'Description',
-				name: 'title',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Description',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Short title of the change',
-			},
-			{
-				displayName: 'Notes',
 				name: 'info',
 				type: 'string',
 				typeOptions: {
@@ -877,25 +830,11 @@ const updateOperation: INodeProperties[] = [
 				routing: {
 					send: {
 						type: 'body',
-						property: 'Notes',
+						property: 'Description',
 						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'More information about the change',
-			},
-			{
-				displayName: 'Outage',
-				name: 'isOutage',
-				type: 'boolean',
-				default: false,
-				routing: {
-					send: {
-						type: 'body',
-						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description: 'Whether the change causes an outage',
 			},
 			{
 				displayName: 'Owner Team',
@@ -909,7 +848,21 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the change',
+				description: 'Which team should implement the change',
+			},
+			{
+				displayName: 'Private',
+				name: 'private',
+				type: 'boolean',
+				default: false,
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Private',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Whether change is private',
 			},
 			{
 				displayName: 'Resolution',
@@ -929,76 +882,62 @@ const updateOperation: INodeProperties[] = [
 				description: 'Resolution details of the change',
 			},
 			{
-				displayName: 'Severity',
-				name: 'severity',
-				type: 'options',
-				options: [
-					{
-						name: 'Low',
-						value: 'Low',
-					},
-					{
-						name: 'Medium',
-						value: 'Medium',
-					},
-					{
-						name: 'High',
-						value: 'High',
-					},
-				],
-				default: 'Low',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Severity',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description:
-					'How severe is this change. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Source',
-				name: 'source',
-				type: 'options',
-				options: [
-					{
-						name: 'ImmyBot',
-						value: 'ImmyBot',
-					},
-					{
-						name: 'Mail',
-						value: 'Mail',
-					},
-					{
-						name: 'Zabbix',
-						value: 'Zabbix',
-					},
-				],
-				default: 'ImmyBot',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'Source',
-						value: '={{ $value || undefined }}',
-					},
-				},
-				description:
-					'In which source the change originated. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
-			},
-			{
-				displayName: 'Start Date Time',
-				name: 'changeStartDateTime',
-				type: 'dateTime',
+				displayName: 'Service (ID)',
+				name: 'serviceId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
 				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'EventStartDateTime',
+						property: 'Service_Valid',
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Date and time when the change started',
+				description: 'Which Service is related to the change',
+			},
+			{
+				displayName: 'Service (Name)',
+				name: 'service',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Service',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service is related to the change',
+			},
+			{
+				displayName: 'Service Level Agreement (ID)',
+				name: 'slaId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'XSC_ServiceLevelAgreement_Valid',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service Level Agreement is related to the change',
+			},
+			{
+				displayName: 'Service Level Agreement (Name)',
+				name: 'sla',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'XSC_ServiceLevelAgreement',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service Level Agreement is related to the change',
 			},
 			{
 				displayName: 'Status',
@@ -1012,32 +951,50 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Status of the task',
+				description: 'Status of the change',
 			},
 			{
-				displayName: 'Support Hours',
-				name: 'supportHours',
-				type: 'options',
-				options: [
-					{
-						name: '9x5',
-						value: '9x5',
-					},
-					{
-						name: '24x7',
-						value: '24x7',
-					},
-				],
-				default: '9x5',
+				displayName: 'Subject',
+				name: 'title',
+				type: 'string',
+				default: '',
 				routing: {
 					send: {
 						type: 'body',
-						property: 'SupportHours',
+						property: 'Subject',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Short title of the change',
+			},
+			{
+				displayName: 'Type Of Change',
+				name: 'changeType',
+				type: 'options',
+				options: [
+					{
+						name: 'Normal',
+						value: 'Normal',
+					},
+					{
+						name: 'Operational',
+						value: 'Operational',
+					},
+					{
+						name: 'Standard',
+						value: 'Standard',
+					},
+				],
+				default: 'Normal',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'TypeOfChange',
 						value: '={{ $value || undefined }}',
 					},
 				},
 				description:
-					'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+					'Type of the change. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Unread',
@@ -1062,7 +1019,7 @@ const updateOperation: INodeProperties[] = [
 				routing: {
 					send: {
 						type: 'body',
-						property: 'CustomerLink_RecID',
+						property: 'RequestorLink_RecID',
 						value: '={{ $value || undefined }}',
 					},
 				},

@@ -304,7 +304,22 @@ const createOperation: INodeProperties[] = [
 				description: 'Whether task was read',
 			},
 			{
-				displayName: 'Service',
+				displayName: 'Service (ID)',
+				name: 'serviceId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Service_Valid',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service is related to the change',
+			},
+			{
+				displayName: 'Service (Name)',
 				name: 'service',
 				type: 'string',
 				default: '',
@@ -435,8 +450,7 @@ const getOperation: INodeProperties[] = [
 				resource: ['task'],
 			},
 		},
-		description:
-			'Choose ID type from the list',
+		description: 'Choose ID type from the list',
 	},
 	{
 		displayName: 'Number',
@@ -890,7 +904,22 @@ const updateOperation: INodeProperties[] = [
 				description: 'Resolution details of the task',
 			},
 			{
-				displayName: 'Service',
+				displayName: 'Service (ID)',
+				name: 'serviceId',
+				type: 'string',
+				placeholder: '0014960452EE44259E8149C715B24DEF',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Service_Valid',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which Service is related to the change',
+			},
+			{
+				displayName: 'Service (Name)',
 				name: 'service',
 				type: 'string',
 				default: '',
