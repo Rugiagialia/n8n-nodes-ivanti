@@ -20,7 +20,6 @@ export const changeOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						// baseURL: 'https://httpbin.org/anything',
-						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'POST',
 						url: '/changes',
 					},
@@ -34,7 +33,6 @@ export const changeOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						// baseURL: 'https://httpbin.org/anything',
-						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'DELETE',
 					},
 				},
@@ -119,7 +117,6 @@ export const changeOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						// baseURL: 'https://httpbin.org/anything',
-						baseURL: 'https://test.automaton.ninja/anything',
 						method: 'PATCH',
 					},
 				},
