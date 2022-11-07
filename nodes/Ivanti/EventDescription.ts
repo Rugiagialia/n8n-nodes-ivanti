@@ -482,6 +482,7 @@ const getOperation: INodeProperties[] = [
 		],
 		default: 'recId',
 		required: true,
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				operation: ['get'],
@@ -489,7 +490,7 @@ const getOperation: INodeProperties[] = [
 			},
 		},
 		description:
-			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+			'Choose ID type from the list',
 	},
 	{
 		displayName: 'Number',
