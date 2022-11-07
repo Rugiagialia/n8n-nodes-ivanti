@@ -297,7 +297,7 @@ const createOperation: INodeProperties[] = [
 				routing: {
 					send: {
 						type: 'body',
-						property: 'IsUnread',
+						property: 'IsUnRead',
 						value: '={{ $value || undefined }}',
 					},
 				},
@@ -938,7 +938,7 @@ const updateOperation: INodeProperties[] = [
 				routing: {
 					send: {
 						type: 'body',
-						property: 'IsUnread',
+						property: 'IsUnRead',
 						value: '={{ $value || undefined }}',
 					},
 				},
