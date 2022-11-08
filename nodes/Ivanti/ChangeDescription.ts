@@ -440,6 +440,16 @@ const deleteOperation: INodeProperties[] = [
 			request: {
 				url: "=/changes('{{ $value }}')",
 			},
+			output: {
+				postReceive: [
+					{
+						type: 'setKeyValue',
+						properties: {
+							Result: 'Success',
+						},
+					},
+				],
+			},
 		},
 		description: 'RecId value of the change in Ivanti',
 	},

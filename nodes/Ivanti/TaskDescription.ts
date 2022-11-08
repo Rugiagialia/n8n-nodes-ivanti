@@ -420,6 +420,16 @@ const deleteOperation: INodeProperties[] = [
 			request: {
 				url: "=/Task__Assignments('{{ $value }}')",
 			},
+			output: {
+				postReceive: [
+					{
+						type: 'setKeyValue',
+						properties: {
+							Result: 'Success',
+						},
+					},
+				],
+			},
 		},
 		description: 'RecId value of the task in Ivanti',
 	},

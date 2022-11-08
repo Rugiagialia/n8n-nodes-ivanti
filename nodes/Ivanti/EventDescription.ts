@@ -458,6 +458,16 @@ const deleteOperation: INodeProperties[] = [
 			request: {
 				url: "=/Frs_EVT_Events('{{ $value }}')",
 			},
+			output: {
+				postReceive: [
+					{
+						type: 'setKeyValue',
+						properties: {
+							Result: 'Success',
+						},
+					},
+				],
+			},
 		},
 		description: 'RecId value of the event in Ivanti',
 	},

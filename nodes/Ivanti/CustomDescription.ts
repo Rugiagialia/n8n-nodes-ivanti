@@ -230,6 +230,16 @@ const deleteOperation: INodeProperties[] = [
 			request: {
 				url: "=/{{$parameter['busenessObjectId']}}s('{{ $value }}')",
 			},
+			output: {
+				postReceive: [
+					{
+						type: 'setKeyValue',
+						properties: {
+							Result: 'Success',
+						},
+					},
+				],
+			},
 		},
 		description: 'RecId value of the custom object in Ivanti',
 	},

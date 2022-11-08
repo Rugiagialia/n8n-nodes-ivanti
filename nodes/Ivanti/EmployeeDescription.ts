@@ -144,7 +144,6 @@ const getOperation: INodeProperties[] = [
 				name: 'Record ID',
 				value: 'recId',
 			},
-
 		],
 		default: 'recId',
 		required: true,
@@ -491,6 +490,16 @@ const deleteOperation: INodeProperties[] = [
 		routing: {
 			request: {
 				url: "=/employees('{{ $value }}')",
+			},
+			output: {
+				postReceive: [
+					{
+						type: 'setKeyValue',
+						properties: {
+							Result: 'Success',
+						},
+					},
+				],
 			},
 		},
 		description: 'RecId value of the employee (user) in Ivanti',
