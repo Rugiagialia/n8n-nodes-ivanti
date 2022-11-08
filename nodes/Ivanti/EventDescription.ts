@@ -255,7 +255,6 @@ const createOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether the event causes an outage',
@@ -351,13 +350,12 @@ const createOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether event was read',
 			},
 			{
-				displayName: 'User ID',
+				displayName: 'Customer User (ID)',
 				name: 'userId',
 				type: 'string',
 				placeholder: '0014960452EE44259E8149C715B24DEF',
@@ -369,7 +367,7 @@ const createOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which user (employee) is related to event',
+				description: 'Which customer user (employee) is related to event',
 			},
 		],
 	},
@@ -889,7 +887,6 @@ const updateOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsOutage',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether the event causes an outage',
@@ -1045,13 +1042,12 @@ const updateOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether event was read',
 			},
 			{
-				displayName: 'User ID',
+				displayName: 'Customer User (ID)',
 				name: 'userId',
 				type: 'string',
 				placeholder: '0014960452EE44259E8149C715B24DEF',
@@ -1063,7 +1059,7 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which user (employee) is related to event',
+				description: 'Which customer user (employee) is related to event',
 			},
 		],
 	},

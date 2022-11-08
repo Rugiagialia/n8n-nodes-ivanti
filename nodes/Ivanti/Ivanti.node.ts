@@ -3,6 +3,7 @@ import { eventFields, eventOperations } from './EventDescription';
 import { taskFields, taskOperations } from './TaskDescription';
 import { customFields, customOperations } from './CustomDescription';
 import { changeFields, changeOperations } from './ChangeDescription';
+import { employeeFields, employeeOperations } from './EmployeeDescription';
 
 export class Ivanti implements INodeType {
 	description: INodeTypeDescription = {
@@ -49,10 +50,10 @@ export class Ivanti implements INodeType {
 						name: 'Custom Business Object',
 						value: 'custom',
 					},
-					// {
-					// 	name: 'Employee',
-					// 	value: 'employee',
-					// },
+					{
+						name: 'Employee',
+						value: 'employee',
+					},
 					{
 						name: 'Event',
 						value: 'event',
@@ -85,6 +86,8 @@ export class Ivanti implements INodeType {
 			...customFields,
 			...changeOperations,
 			...changeFields,
+			...employeeOperations,
+			...employeeFields,
 		],
 	};
 }

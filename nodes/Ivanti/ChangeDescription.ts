@@ -205,7 +205,7 @@ const createOperation: INodeProperties[] = [
 			'Type of the change. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
-		displayName: 'User ID',
+		displayName: 'Customer User (ID)',
 		name: 'userId',
 		type: 'string',
 		placeholder: '0014960452EE44259E8149C715B24DEF',
@@ -224,7 +224,7 @@ const createOperation: INodeProperties[] = [
 				value: '={{ $value || undefined }}',
 			},
 		},
-		description: 'Which user (employee) is related to change',
+		description: 'Which customer user (employee) is related to change',
 	},
 	{
 		displayName: 'Use Predefined Fields',
@@ -276,7 +276,6 @@ const createOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'Private',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether change is private',
@@ -348,7 +347,6 @@ const createOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether change was read',
@@ -856,7 +854,6 @@ const updateOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'Private',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether change is private',
@@ -1002,13 +999,12 @@ const updateOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether change was read',
 			},
 			{
-				displayName: 'User ID',
+				displayName: 'Customer User (ID)',
 				name: 'userId',
 				type: 'string',
 				placeholder: '0014960452EE44259E8149C715B24DEF',
@@ -1020,7 +1016,7 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which user (employee) is related to change',
+				description: 'Which customer user (employee) is related to change',
 			},
 		],
 	},

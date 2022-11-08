@@ -298,7 +298,6 @@ const createOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether task was read',
@@ -969,7 +968,6 @@ const updateOperation: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'IsUnRead',
-						value: '={{ $value || undefined }}',
 					},
 				},
 				description: 'Whether task was read',
