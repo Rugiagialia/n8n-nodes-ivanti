@@ -26,6 +26,7 @@ export class Ivanti implements INodeType {
 			},
 		],
 		requestDefaults: {
+			skipSslCertificateValidation: true,
 			returnFullResponse: true,
 			baseURL:  '={{ $credentials.baseUrl.replace(new RegExp("/$"), "") }}/HEAT/api/odata/businessobject',
 			url: '',
