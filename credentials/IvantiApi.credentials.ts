@@ -37,6 +37,7 @@ export class IvantiApi implements ICredentialType {
 	};
 	test: ICredentialTestRequest = {
 		request: {
+			skipSslCertificateValidation: true,
 			baseURL: '={{ $credentials.baseUrl }}',
 			url: '/HEAT/api/odata/businessobject/incidents?$top=1',
 		},
