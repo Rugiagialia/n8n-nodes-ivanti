@@ -4,6 +4,7 @@ import { taskFields, taskOperations } from './TaskDescription';
 import { customFields, customOperations } from './CustomDescription';
 import { changeFields, changeOperations } from './ChangeDescription';
 import { employeeFields, employeeOperations } from './EmployeeDescription';
+import { incidentFields, incidentOperations } from './IncidentDescription';
 
 export class Ivanti implements INodeType {
 	description: INodeTypeDescription = {
@@ -59,10 +60,10 @@ export class Ivanti implements INodeType {
 						name: 'Event',
 						value: 'event',
 					},
-					// {
-					// 	name: 'Incident',
-					// 	value: 'incident',
-					// },
+					{
+						name: 'Incident',
+						value: 'incident',
+					},
 					// {
 					// 	name: 'Organizational Unit',
 					// 	value: 'orgunit',
@@ -89,6 +90,8 @@ export class Ivanti implements INodeType {
 			...changeFields,
 			...employeeOperations,
 			...employeeFields,
+			...incidentOperations,
+			...incidentFields,
 		],
 	};
 }

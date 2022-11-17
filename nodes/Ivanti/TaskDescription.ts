@@ -287,7 +287,7 @@ const createOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the task',
+				description: 'Which team should complete the task',
 			},
 			{
 				displayName: 'Unread',
@@ -822,6 +822,20 @@ const updateOperation: INodeProperties[] = [
 				description: 'More information about the task',
 			},
 			{
+				displayName: 'Owner',
+				name: 'owner',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Owner',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which person should complete the task',
+			},
+			{
 				displayName: 'Owner Team',
 				name: 'ownerTeam',
 				type: 'string',
@@ -833,7 +847,7 @@ const updateOperation: INodeProperties[] = [
 						value: '={{ $value || undefined }}',
 					},
 				},
-				description: 'Which team should investigate the task',
+				description: 'Which team should complete the task',
 			},
 			{
 				displayName: 'Parent Link',

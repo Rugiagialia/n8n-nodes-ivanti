@@ -842,6 +842,20 @@ const updateOperation: INodeProperties[] = [
 				description: 'More information about the change',
 			},
 			{
+				displayName: 'Owner',
+				name: 'owner',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Owner',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which person should implement the change',
+			},
+			{
 				displayName: 'Owner Team',
 				name: 'ownerTeam',
 				type: 'string',

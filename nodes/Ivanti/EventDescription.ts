@@ -902,6 +902,20 @@ const updateOperation: INodeProperties[] = [
 				description: 'Whether the event causes an outage',
 			},
 			{
+				displayName: 'Owner',
+				name: 'owner',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'Owner',
+						value: '={{ $value || undefined }}',
+					},
+				},
+				description: 'Which person should investigate the event',
+			},
+			{
 				displayName: 'Owner Team',
 				name: 'ownerTeam',
 				type: 'string',
