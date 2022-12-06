@@ -1,5 +1,7 @@
 import { INodeProperties } from 'n8n-workflow';
 
+// new
+
 export const changeOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
