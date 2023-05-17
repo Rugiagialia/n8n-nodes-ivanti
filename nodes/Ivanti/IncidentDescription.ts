@@ -110,6 +110,18 @@ export const incidentOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link an incident',
+				action: 'Link an incident',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
+					},
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update an incident',
@@ -1283,6 +1295,56 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (Incident)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['incident'],
+			},
+		},
+		description: 'RecId value of the incident in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['incident'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['incident'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/incidents('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
 export const incidentFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -1290,4 +1352,5 @@ export const incidentFields: INodeProperties[] = [
 	...getOperation,
 	...getCountOperation,
 	...updateOperation,
+	...linkOperation,
 ];

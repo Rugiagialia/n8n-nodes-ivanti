@@ -110,6 +110,18 @@ export const taskOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link a task',
+				action: 'Link a task',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
+					},
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a task',
@@ -1066,6 +1078,57 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (Task)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['task'],
+			},
+		},
+		description: 'RecId value of the task in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['task'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['task'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/tasks('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
+
 export const taskFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -1073,4 +1136,5 @@ export const taskFields: INodeProperties[] = [
 	...getOperation,
 	...getCountOperation,
 	...updateOperation,
+	...linkOperation,
 ];

@@ -110,6 +110,18 @@ export const employeeOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link an employee',
+				action: 'Link an employee',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
+					},
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update an employee',
@@ -1099,6 +1111,56 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (Employee)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['employee'],
+			},
+		},
+		description: 'RecId value of the employee in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['employee'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['employee'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/employees('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
 export const employeeFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -1106,4 +1168,5 @@ export const employeeFields: INodeProperties[] = [
 	...getOperation,
 	...getCountOperation,
 	...updateOperation,
+	...linkOperation,
 ];

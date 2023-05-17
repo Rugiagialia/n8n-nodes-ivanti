@@ -110,6 +110,18 @@ export const eventOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link an event',
+				action: 'Link an event',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
+					},
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update an event',
@@ -1155,6 +1167,56 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (Event)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['event'],
+			},
+		},
+		description: 'RecId value of the event in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['event'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['event'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/Frs_EVT_Events('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
 export const eventFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -1162,4 +1224,5 @@ export const eventFields: INodeProperties[] = [
 	...getOperation,
 	...getCountOperation,
 	...updateOperation,
+	...linkOperation,
 ];

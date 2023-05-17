@@ -2,7 +2,7 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const customOperations: INodeProperties[] = [
 	{
-		displayName: 'Business Object ID',
+		displayName: 'Business Object Name',
 		name: 'busenessObjectId',
 		required: true,
 		noDataExpression: true,
@@ -105,8 +105,8 @@ export const customOperations: INodeProperties[] = [
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Get many objects',
-				action: 'Get many objects',
+				description: 'Get many custom objects',
+				action: 'Get many custom objects',
 				routing: {
 					request: {
 						// baseURL: 'https://httpbin.org/anything',
@@ -122,6 +122,18 @@ export const customOperations: INodeProperties[] = [
 								},
 							},
 						],
+					},
+				},
+			},
+			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link a custom object',
+				action: 'Link a custom object',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
 					},
 				},
 			},
@@ -609,6 +621,58 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (This Object)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['custom'],
+			},
+		},
+		description: 'RecId value of the custom object in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['custom'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['custom'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/{{ $parameter['busenessObjectId'] }}s('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
+
+
 export const customFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -616,4 +680,5 @@ export const customFields: INodeProperties[] = [
 	...getCountOperation,
 	...getOperation,
 	...updateOperation,
+	...linkOperation,
 ];

@@ -112,6 +112,18 @@ export const changeOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Link',
+				value: 'link',
+				description: 'Link a change',
+				action: 'Link a change',
+				routing: {
+					request: {
+						// baseURL: 'https://httpbin.org/anything',
+						method: 'PATCH',
+					},
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a change',
@@ -1114,6 +1126,56 @@ const updateOperation: INodeProperties[] = [
 	},
 ];
 
+const linkOperation: INodeProperties[] = [
+	{
+		displayName: "Record ID (Change)",
+		name: 'id',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['change'],
+			},
+		},
+		description: 'RecId value of the change in Ivanti',
+	},
+	{
+		displayName: 'Relationship Name',
+		name: 'relName',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['change'],
+			},
+		},
+		description: 'Relationship name which will be used to link business objects',
+	},
+	{
+		displayName: 'Record ID (Related Object)',
+		name: 'rid',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['link'],
+				resource: ['change'],
+			},
+		},
+		routing: {
+			request: {
+				url: "=/changes('{{ $parameter['id'] }}')/{{ $parameter['relName'] }}('{{ $value }}')/$Ref",
+			},
+		},
+		description: 'RecId value of the related business object in Ivanti',
+	},
+];
+
 export const changeFields: INodeProperties[] = [
 	...createOperation,
 	...deleteOperation,
@@ -1121,4 +1183,5 @@ export const changeFields: INodeProperties[] = [
 	...getOperation,
 	...getCountOperation,
 	...updateOperation,
+	...linkOperation,
 ];
