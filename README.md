@@ -1,47 +1,102 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-ivanti
 
-# n8n-nodes-starter
+This is an n8n community node package. It allows you to use Ivanti Service Manager (ISM) in your n8n workflows.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](n8n.io). It includes the node linter and other dependencies.
+This node enables interaction with your on-premise Ivanti installation's API, allowing you to automate tasks related to incidents, changes, users, and other Ivanti business objects via its OData API.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
-## Prerequisites
+[Installation](#installation)
+[Supported Operations](#supported-operations)
+[Credentials](#credentials)
+[Compatibility](#compatibility)
+[Resources](#resources)
 
-You need the following installed on your development machine:
+## Installation
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 16. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-	```
-	npm install n8n -g
-	```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
+## Supported Operations
 
-## Using this starter
+This node supports the following Ivanti resources and operations:
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+*   **Change**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
+*   **Custom Business Object**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
+*   **Employee**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
+*   **Event**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
+*   **Incident**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
+*   **Task**
+    *   Create
+    *   Delete
+    *   Get
+    *   Get Count
+    *   Get Many
+    *   Link
+    *   Update
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-    ```
-    git clone https://github.com/<your organization>/<your-repo-name>.git
-    ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+## Credentials
 
-## More information
+To use this node, you need to configure Ivanti API credentials in n8n.
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+1.  **API Key:**
+    *   You will need to generate an API key within your Ivanti Service Manager instance. This is typically done through the administrator interface.
+    *   Log in to Ivanti Service Manager as an Administrator.
+    *   Navigate to the Configuration Console by clicking the Wrench icon (Configure Application).
+    *   Go to **Security Controls** > **API Keys**.
+    *   Select an existing **Key Group** (like `rest_api_key_group`) or create a new one.
+    *   Within the group, click **Add New Key**. Provide a **Name** (e.g., `n8n-integration`) and select an appropriate **Role** (often `Admin` or a dedicated API role).
+    *   Click **Save Key**.
+    *   Copy the **Generated Key** shown. This is your API key.
+2.  **Base URL:**
+    *   This is the main URL of your Ivanti instance used to access the API.
+    *   For example: `https://yourcompany.ivanti-itsm.com` or `https://ivanti.yourcompany.com`.
+    *   **Important:** The URL should be provided *without* the `/HEAT/api/...` suffix. The node will add this part automatically.
 
-## License
+When creating the credentials in n8n, enter the obtained API key and your Ivanti instance's Base URL into the respective fields.
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+## Compatibility
+
+This node was developed using n8n Nodes API version 1. It should work with most recent n8n versions, but using n8n v1.0.0 or newer is recommended.
+
+Tested with Ivanti Service Manager (ISM) version: **2024**
+
+## Resources
+
+*   [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
+*   [Ivanti Service Manager API Documentation (Web Service API - includes OData/REST)](https://help.ivanti.com/ht/help/en_US/ISM/2024/admin/Content/Configure/API/Web_Service_API.htm)
+*   [Ivanti Service Manager OData API Syntax Reference](https://help.ivanti.com/ht/help/en_US/ISM/2024/admin/Content/Configure/API/OData-API-Syntax.htm)
